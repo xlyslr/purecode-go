@@ -52,7 +52,23 @@ package q1109
 
 //leetcode submit region begin(Prohibit modification and deletion)
 func corpFlightBookings(bookings [][]int, n int) []int {
-	return nil
+	// 差分数组
+	labels := make([]int, n+1)
+	for i := 0; i < len(bookings); i++ {
+		labels[bookings[i][0]] += bookings[i][2]
+		// 为什么加1？因为last包含在加的范围内
+		last := bookings[i][1] + 1
+		// 为什么n+1？因为差分数组的0位忽略了，数组长度是n+1
+		if last < n+1 {
+			labels[last] -= bookings[i][2]
+		}
+	}
+	seats := make([]int, n+1)
+	seats[0] = labels[0]
+	for i := 1; i < len(labels); i++ {
+		seats[i] = labels[i] + seats[i-1]
+	}
+	return seats[1:]
 }
 
 //leetcode submit region end(Prohibit modification and deletion)
