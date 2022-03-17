@@ -57,6 +57,8 @@ package q0380
 //leetcode submit region begin(Prohibit modification and deletion)
 import "math/rand"
 
+// RandomizedSet 插入和删除O1肯定需要借助hashmap；随机取出O1数组下标就够了
+// 删除的时候要知道元素的索引，所以hashmap应该存值所对应的索引
 type RandomizedSet struct {
 	nums     []int       // 值列表
 	valToIdx map[int]int // <值,值在arr中的索引>
