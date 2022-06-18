@@ -55,22 +55,32 @@ import . "rhys.me/purecode-go/src/me/rhys/leetcode/editor/cn"
  *     Right *TreeNode
  * }
  */
+var p *TreeNode
+var dummy *TreeNode
+
 func flatten(root *TreeNode) {
+	dummy = &TreeNode{}
+	p = dummy
+	preorder(root)
+	root.Left = nil
+	if dummy.Right != nil {
+		root.Val = dummy.Right.Val
+		root.Right = dummy.Right.Right
+	} else {
+		root.Right = nil
+	}
+}
+
+func preorder(root *TreeNode) {
 	if root == nil {
 		return
 	}
-	flatten(root.Left)
-	flatten(root.Right)
-
-	right := root.Right
-	root.Right = root.Left
-	root.Left = nil
-
-	r := root
-	for r.Right != nil {
-		r = r.Right
+	p.Right = &TreeNode{
+		Val: root.Val,
 	}
-	r.Right = right
+	p = p.Right
+	preorder(root.Left)
+	preorder(root.Right)
 }
 
 //leetcode submit region end(Prohibit modification and deletion)
